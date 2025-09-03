@@ -105,25 +105,25 @@ def create_binary_visualization(image, levels, sample_size=8):
 st.markdown("## 🖼️ 1. 画像の準備")
 
 # 画像アップロードまたはデモデータの選択
+uploaded_file = st.file_uploader("画像をアップロードしてください", type=['png', 'jpg', 'jpeg'])
+
 use_demo = st.checkbox("デモデータを使用", value=True)
 
-if use_demo:
+if uploaded_file is not None:
+    image = Image.open(uploaded_file)
+    st.success("アップロードされた画像を使用しています")
+    use_demo = False  # アップロードされた場合はデモデータのチェックを無効化
+elif use_demo:
     image = create_demo_image()
     st.success("デモデータを使用しています")
 else:
-    uploaded_file = st.file_uploader("画像をアップロードしてください", type=['png', 'jpg', 'jpeg'])
-    
-    if uploaded_file is not None:
-        image = Image.open(uploaded_file)
-        st.success("画像がアップロードされました")
-    else:
-        st.warning("画像をアップロードするか、デモデータを使用してください")
-        st.stop()
+    st.warning("画像をアップロードするか、デモデータのチェックボックスをオンにしてください")
+    st.stop()
 
 # 画像を表示
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
-    st.image(image, caption="元の画像", use_column_width=True)
+    st.image(image, caption="元の画像", use_container_width=True)
 
 st.markdown("---")
 
@@ -181,10 +181,10 @@ sampled_image, new_dimensions = apply_sampling(image, resolution)
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.image(image, caption="元の画像", use_column_width=True)
+    st.image(image, caption="元の画像", use_container_width=True)
 
 with col2:
-    st.image(sampled_image, caption=f"標本化後 ({new_dimensions[0]}×{new_dimensions[1]} ピクセル)", use_column_width=True)
+    st.image(sampled_image, caption=f"標本化後 ({new_dimensions[0]}×{new_dimensions[1]} ピクセル)", use_container_width=True)
 
 with col3:
     # Plotlyを使った格子の可視化
@@ -215,7 +215,9 @@ with col3:
         xaxis_title="X座標",
         yaxis_title="Y座標",
         showlegend=False,
-        height=300,
+        width=None,  # 自動調整
+        height=None,  # 自動調整
+        margin=dict(l=20, r=20, t=40, b=20),  # マージンを調整
         yaxis=dict(scaleanchor="x", scaleratio=1, autorange="reversed")
     )
     
@@ -246,10 +248,10 @@ quantized_image = apply_quantization(sampled_image, levels)
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.image(sampled_image, caption="標本化後の画像", use_column_width=True)
+    st.image(sampled_image, caption="標本化後の画像", use_container_width=True)
 
 with col2:
-    st.image(quantized_image, caption=f"量子化後 ({levels}階調)", use_column_width=True)
+    st.image(quantized_image, caption=f"量子化後 ({levels}階調)", use_container_width=True)
 
 with col3:
     # 階調の分布をヒストグラムで表示
@@ -339,7 +341,7 @@ sample_pixels, bit_depth = create_binary_visualization(quantized_image, levels)
 col1, col2 = st.columns([1, 1])
 
 with col1:
-    st.image(quantized_image, caption=f"量子化済み画像 ({levels}階調)", use_column_width=True)
+    st.image(quantized_image, caption=f"量子化済み画像 ({levels}階調)", use_container_width=True)
 
 with col2:
     # サンプルピクセルの2進数表現をテーブルで表示
@@ -432,13 +434,13 @@ st.markdown("### 🖼️ デジタル化プロセスの全体像")
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
-    st.image(image, caption="①元の画像", use_column_width=True)
+    st.image(image, caption="①元の画像", use_container_width=True)
 
 with col2:
-    st.image(sampled_image, caption=f"②標本化後<br>({new_dimensions[0]}×{new_dimensions[1]}px)", use_column_width=True)
+    st.image(sampled_image, caption=f"②標本化後<br>({new_dimensions[0]}×{new_dimensions[1]}px)", use_container_width=True)
 
 with col3:
-    st.image(quantized_image, caption=f"③量子化後<br>({levels}階調)", use_column_width=True)
+    st.image(quantized_image, caption=f"③量子化後<br>({levels}階調)", use_container_width=True)
 
 with col4:
     # 最終的なデジタル表現を数値で示す
