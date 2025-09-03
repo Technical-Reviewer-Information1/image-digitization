@@ -458,7 +458,9 @@ with col4:
     
     fig.update_layout(
         title="④デジタルデータ<br>(数値表現)",
-        height=200,
+        width=None,  # 自動調整
+        height=None,  # 自動調整
+        margin=dict(l=20, r=20, t=60, b=20),  # マージンを調整（タイトルが2行なので上を少し大きく）
         yaxis=dict(scaleanchor="x", scaleratio=1, autorange="reversed")
     )
     
