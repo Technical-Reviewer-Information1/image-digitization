@@ -16,7 +16,7 @@ st.set_page_config(
 )
 
 # タイトルとキャプション
-st.title("画像のデジタル表現①デジタル化の手順")
+st.title("画像のデジタル表現①デジタル化の手順（pp.159-160）")
 st.caption("Created by Dit-Lab.(Daiki ITO)")
 st.caption("Supported by Tomoaki ATSUMI")
 
