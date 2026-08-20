@@ -1,0 +1,101 @@
+  <section class="step" id="step1">
+    <h2><span class="no">STEP 1</span>本文の図1をたどる</h2>
+    <p class="desc">モノクロ画像を <strong>16画素・8階調</strong> のデジタルデータに変換する手順です。ボタンで1手順ずつ進めましょう。</p>
+    <div class="panel">
+      <div class="btn-row">
+        <button class="btn" id="stepPrev">← もどる</button>
+        <button class="btn" id="stepNext">次の手順へ →</button>
+        <button class="btn" id="stepAll">すべて表示</button>
+      </div>
+      <div class="pipe" id="pipeBox" style="margin-top:14px"></div>
+      <div class="note" id="pipeNote" style="margin-top:12px"></div>
+      <p class="small" style="color:var(--muted);margin-top:8px">マス目をクリックすると、その画素の段階値と2進法が下に出ます。</p>
+      <div class="note info" id="cellNote" style="margin-top:6px">マス目を選んでください。</div>
+    </div>
+  </section>
+
+  <section class="step" id="step2">
+    <h2><span class="no">STEP 2</span>解像度と階調を変えて比べる</h2>
+    <p class="desc">画素を細かく、階調を多くするほど元の画像に近づきます。ただし<strong>データ量は増えます</strong>。</p>
+    <div class="panel">
+      <div class="grid c2">
+        <div>
+          <label class="fld" for="res">解像度：<span class="mono" id="resV">8</span> × <span class="mono" id="resV2">8</span> 画素</label>
+          <input type="range" id="res" min="2" max="64" step="1" value="8">
+          <label class="fld" for="lv" style="margin-top:12px">階調：<span class="mono" id="lvV">8</span> 段階
+            （<span class="mono" id="lvBit">3</span> ビット）</label>
+          <input type="range" id="lv" min="1" max="8" step="1" value="3">
+          <label class="fld" for="picSel" style="margin-top:12px">画像</label>
+          <select class="sel" id="picSel">
+            <option value="grad" selected>なめらかなグラデーション</option>
+            <option value="face">丸と線のある絵</option>
+            <option value="text">細かい模様</option>
+          </select>
+          <div class="metrics" style="margin-top:12px">
+            <div class="metric"><div class="k">画素数</div><div class="v" id="mPx">—</div></div>
+            <div class="metric"><div class="k">1画素あたり</div><div class="v" id="mBpp">—</div></div>
+            <div class="metric"><div class="k">データ量</div><div class="v" id="mSize">—</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="imgpair">
+            <figure><div id="imgOrig"></div><figcaption>もとのアナログ画像</figcaption></figure>
+            <figure><div id="imgDig"></div><figcaption>デジタル化した画像</figcaption></figure>
+          </div>
+          <div class="note" id="imgNote" style="margin-top:12px"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="step" id="step3">
+    <h2><span class="no">STEP 3</span>データ量を計算する</h2>
+    <p class="desc">画像のデータ量は <strong>横の画素数 × 縦の画素数 × 1画素あたりのビット数</strong> です。</p>
+    <div class="panel">
+      <div class="btn-row" style="flex-wrap:wrap">
+        <button class="btn" data-pre="4,4,3">本文の図1（4×4・8階調）</button>
+        <button class="btn" data-pre="1920,1080,24">フルHD・フルカラー</button>
+        <button class="btn" data-pre="4032,3024,24">スマホの写真（1200万画素）</button>
+      </div>
+      <div class="grid c2" style="margin-top:12px">
+        <div>
+          <label class="fld" for="pw">横の画素数</label><input type="number" id="pw" value="4" min="1" class="mono">
+          <label class="fld" for="ph" style="margin-top:10px">縦の画素数</label><input type="number" id="ph" value="4" min="1" class="mono">
+          <label class="fld" for="pb" style="margin-top:10px">1画素あたりのビット数</label><input type="number" id="pb" value="3" min="1" class="mono">
+        </div>
+        <div>
+          <div class="eqbox" id="pEq">—</div>
+          <div class="metrics" style="margin-top:12px">
+            <div class="metric"><div class="k">データ量</div><div class="v" id="pSize" style="font-size:1.4rem">—</div></div>
+            <div class="metric"><div class="k">階調</div><div class="v" id="pLv" style="font-size:1.2rem">—</div></div>
+          </div>
+          <div class="note info" id="pNote" style="margin-top:12px"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="step" id="step4">
+    <h2><span class="no">STEP 4</span>本文の空欄【ア】〜【ウ】を確かめる</h2>
+    <div class="panel" id="blankBox"></div>
+    <div class="note" id="blankNote" style="margin-top:10px"></div>
+  </section>
+
+  <section class="step" id="glossary">
+    <h2><span class="no">用語</span>この節で出てくることば</h2>
+    <div class="panel"><div id="glossBox"></div></div>
+  </section>
+
+  <section class="step" id="wrap">
+    <h2><span class="no">まとめ</span>おさえておきたいこと</h2>
+    <div class="panel">
+      <ul class="bullets">
+        <li>画像のデジタル化も音と同じで <strong>標本化 → 量子化 → 符号化</strong> の順。</li>
+        <li><strong>標本化</strong>＝画像を等間隔の格子状の区画（画素・ピクセル）に分ける。</li>
+        <li><strong>量子化</strong>＝画素の濃淡を、決められた段階のいちばん近い整数値に置きかえる。</li>
+        <li><strong>符号化</strong>＝その整数値を2進法のビット列に直す。</li>
+        <li>画素が<strong>細かい</strong>（解像度が高い）ほど、階調が<strong>大きい</strong>ほど元の画像に近づくが、データ量は増える。</li>
+        <li>データ量＝横の画素数 × 縦の画素数 × 1画素あたりのビット数。n ビットなら 2<sup>n</sup> 階調。</li>
+      </ul>
+    </div>
+  </section>
