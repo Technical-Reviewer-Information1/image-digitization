@@ -138,7 +138,7 @@
   function drawBlanks() {
     $('blankBox').innerHTML = BLANKS.map((b, i) =>
       '<div' + (i ? ' style="margin-top:18px;padding-top:16px;border-top:1px solid var(--line)"' : '') + '>' +
-      '<p class="qhead" style="margin:0 0 8px">【' + b.k + '】　' + b.q + '</p>' +
+      '<p class="pq">【' + b.k + '】　' + b.q + '</p>' +
       '<div class="choice4 v" data-i="' + i + '">' + b.ch.map((c, j) =>
         '<button class="btn" data-i="' + i + '" data-c="' + c + '" style="text-align:left">' + '⓪①②③'[j] + '　' + c + '</button>').join('') +
       '</div><div class="note" id="bfb' + i + '" hidden></div></div>').join('');
